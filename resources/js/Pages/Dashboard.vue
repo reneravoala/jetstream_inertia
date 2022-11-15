@@ -3,6 +3,11 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import Welcome from '@/Components/Welcome.vue';
 import Calendar from 'primevue/calendar';
 
+defineProps({
+    user: Object,
+    unread_messages_count: Object,
+});
+
 const calendar = null;
 
 const dateChanged = (d) => {
@@ -16,7 +21,7 @@ const dateChanged = (d) => {
         <template #header>
             <div class="flex justify-between">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Dashboard
+                    Dashboard {{ unread_messages_count }}
                 </h2>
                 <Calendar v-model="calendar" :inline="true" @date-select="dateChanged">
                     <template #date="slotProps">

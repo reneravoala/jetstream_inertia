@@ -30,6 +30,15 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Dashboard', [
+            'unread_messages_count' => auth()->user()->unreadMessagesCount(),
+        ]);
     })->name('dashboard');
+
+    Route::get('/messages', [\App\Http\Controllers\MessagesController::class, 'index'])->name('messages.index');
+    Route::get('/discussion/{id}', [\App\Http\Controllers\MessagesController::class, 'show'])->name('messages.show');
+    Route::post('/discussion/{id}/create', [\App\Http\Controllers\MessagesController::class, 'create'])->name('messages.create');
+
+    Route::get('/create-thread', [\App\Http\Controllers\MessagesController::class, 'createThread'])->name('create-thread');
+    Route::post('/store-thread', [\App\Http\Controllers\MessagesController::class, 'storeThread'])->name('store-thread');
 });

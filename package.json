@@ -21,7 +21,11 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "date-fns": "^2.29.3",
+        "laravel-echo": "^1.14.1",
         "primeicons": "^6.0.1",
-        "primevue": "^3.18.1"
+        "primevue": "^3.18.1",
+        "pusher-js": "^7.5.0",
+        "vue-pusher": "^1.1.0"
     }
 }
