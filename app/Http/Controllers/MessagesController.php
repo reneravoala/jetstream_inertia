@@ -28,8 +28,8 @@ class MessagesController extends Controller
         ]);
         return inertia('Messages/Discussion', [
             'thread' => $thread,
-            'messages' => $thread->messages()->with('user')->get(),
-            'other' => $thread->other(auth()->user()->id),
+            'messages' => $thread->messagesWithUser()->get(),
+            'other' => $thread->otherUser(auth()->user()->id),
         ]);
     }
 
@@ -69,6 +69,15 @@ class MessagesController extends Controller
         ]);
 
         return \Redirect::route('messages.index');
+    }
+
+    public function setRead(Request $request)
+    {
+        Participant::where('user_id', auth()->user()->id)
+            ->where('thread_id', $request->thread_id)
+            ->update([
+                'last_read' => new Carbon
+            ]);
     }
 
     /**

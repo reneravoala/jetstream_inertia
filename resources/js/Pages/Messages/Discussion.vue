@@ -6,6 +6,8 @@ import {useForm} from "@inertiajs/inertia-vue3";
 import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
+import axios from "axios";
+
 const props = defineProps({
     thread: Object,
     messages: Object,
@@ -14,13 +16,11 @@ const props = defineProps({
 });
 
 Echo.channel(`for_user_${props.user.id}`).listen(".new_message", (data) => {
-    console.log(data);
+    // console.log(data);
     const message = {
         body: data.message,
         created_at: data.created_at,
-        user: {
-            name: data.sender_name
-        }
+        name: data.sender_name
     };
     props.messages.push(message);
 })
@@ -38,6 +38,12 @@ const createMessage = () => {
     })
 }
 
+const setRead = () => {
+    axios.put(route('messages.set-read'), {
+        thread_id: props.thread.id
+    });
+}
+
 </script>
 
 <template>
@@ -45,7 +51,7 @@ const createMessage = () => {
         <template #header>
             <div class="flex justify-between">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Messages {{ other.user.name }}
+                    Messages {{ other.name }}
                 </h2>
             </div>
         </template>
@@ -55,12 +61,12 @@ const createMessage = () => {
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <ul>
                         <li v-for="message in messages" key="thread.id">
-                            <span class="text-sm font-bold mr-2">{{ message.user.name }}</span>
+                            <span class="text-sm font-bold mr-2">{{ message.name }}</span>
                             {{ message.body }}
                             <span class="text-xs">{{ formatDistance(new Date(message.created_at), new Date(), {locale: fr, addSuffix: true}) }}</span></li>
                     </ul>
                     <form @submit.prevent="createMessage">
-                        <Textarea v-model="form.body" rows="5" cols="30" />
+                        <Textarea v-model="form.body" rows="5" cols="30" @focus="setRead"/>
                         <Button type="submit">Envoyer</Button>
                     </form>
 

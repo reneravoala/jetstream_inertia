@@ -39,6 +39,8 @@ Route::middleware([
     Route::get('/discussion/{id}', [\App\Http\Controllers\MessagesController::class, 'show'])->name('messages.show');
     Route::post('/discussion/{id}/create', [\App\Http\Controllers\MessagesController::class, 'create'])->name('messages.create');
 
+    Route::put('/set-read', [\App\Http\Controllers\MessagesController::class, 'setRead'])->name('messages.set-read');
+
     Route::get('/create-thread', [\App\Http\Controllers\MessagesController::class, 'createThread'])->name('create-thread');
     Route::post('/store-thread', [\App\Http\Controllers\MessagesController::class, 'storeThread'])->name('store-thread');
 });

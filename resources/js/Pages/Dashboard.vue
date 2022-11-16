@@ -5,7 +5,7 @@ import Calendar from 'primevue/calendar';
 
 defineProps({
     user: Object,
-    unread_messages_count: Object,
+    unread_messages_count: Number,
 });
 
 const calendar = null;
