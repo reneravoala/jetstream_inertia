@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageWasComposedEvent;
+use App\Http\Requests\CreateMessageRequest;
+use App\Http\Requests\CreateThreadRequest;
+use App\Http\Requests\SetReadRequest;
 use App\Models\Discussion;
 use App\Models\User;
 use Carbon\Carbon;
@@ -33,7 +36,7 @@ class MessagesController extends Controller
         ]);
     }
 
-    public function create(int $thread_id, Request $request)
+    public function create(int $thread_id, CreateMessageRequest $request)
     {
         $message = Message::create([
             'thread_id' => $thread_id,
@@ -52,7 +55,7 @@ class MessagesController extends Controller
         ]);
     }
 
-    public function storeThread(Request $request)
+    public function storeThread(CreateThreadRequest $request)
     {
         $thread = Thread::create([
             'subject' => $request->subject
@@ -71,7 +74,7 @@ class MessagesController extends Controller
         return \Redirect::route('messages.index');
     }
 
-    public function setRead(Request $request)
+    public function setRead(SetReadRequest $request)
     {
         Participant::where('user_id', auth()->user()->id)
             ->where('thread_id', $request->thread_id)
